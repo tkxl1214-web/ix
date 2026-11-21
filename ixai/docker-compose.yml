@@ -1,0 +1,24 @@
+services:
+  app:
+    build: .
+    ports:
+      - "${PORT:-8000}:8000"
+    environment:
+      SECRET_KEY: ${SECRET_KEY:?Set a unique SECRET_KEY before deployment}
+      BOOTSTRAP_ADMIN_EMAIL: ${BOOTSTRAP_ADMIN_EMAIL:?Set a bootstrap administrator email}
+      GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID:-}
+      GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET:-}
+      GOOGLE_REDIRECT_URI: ${GOOGLE_REDIRECT_URI:-}
+      DATA_DIR: /data
+      MAX_RESPONSE_TOKENS: ${MAX_RESPONSE_TOKENS:-96}
+      MODEL_BLOCK_SIZE: ${MODEL_BLOCK_SIZE:-128}
+      MODEL_EMBED_DIM: ${MODEL_EMBED_DIM:-96}
+      MODEL_HEADS: ${MODEL_HEADS:-4}
+      MODEL_LAYERS: ${MODEL_LAYERS:-2}
+    volumes:
+      - model-data:/data
+    restart: unless-stopped
+    init: true
+
+volumes:
+  model-data:

@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#101210">
+  <meta name="application-name" content="ixaistudio">
+  <title>ixaistudio</title>
+  <link rel="icon" type="image/svg+xml" href="/assets/ixaistudio-logo.svg">
+  <link rel="stylesheet" href="/assets/styles.css?v=20261122-google-only">
+  <link rel="stylesheet" href="/assets/experience.css?v=20261122-google-only">
+</head>
+<body>
+  <div id="auth-view" class="auth-screen hidden" data-mode="login">
+    <div class="auth-layout">
+      <section class="auth-card" aria-labelledby="auth-title">
+        <img class="auth-wordmark mobile-auth-wordmark" src="/assets/ixaistudio-logo.svg" alt="iX">
+        <p class="eyebrow auth-eyebrow">ixaistudio</p>
+        <h1 id="auth-title">iX에 로그인</h1>
+        <p class="muted auth-copy">나만의 학습 공간에서 대화를 이어가세요.</p>
+        <button id="google-login" class="google-login" type="button" disabled>
+          <svg class="google-g" viewBox="0 0 48 48" aria-hidden="true"><path fill="#4285F4" d="M43.6 24.5c0-1.4-.1-2.8-.4-4.1H24v7.8h11c-.5 2.5-1.9 4.6-4.1 6v5.1h6.6c3.9-3.6 6.1-8.8 6.1-14.8Z"/><path fill="#34A853" d="M24 44c5.5 0 10.1-1.8 13.5-4.8l-6.6-5.1c-1.8 1.2-4.1 2-6.9 2-5.3 0-9.8-3.6-11.4-8.4H5.8v5.3A20 20 0 0 0 24 44Z"/><path fill="#FBBC05" d="M12.6 27.7a12 12 0 0 1 0-7.4V15H5.8a20 20 0 0 0 0 18l6.8-5.3Z"/><path fill="#EA4335" d="M24 11.9c3 0 5.7 1 7.8 3.1l5.8-5.8C34.1 6 29.5 4 24 4A20 20 0 0 0 5.8 15l6.8 5.3c1.6-4.8 6.1-8.4 11.4-8.4Z"/></svg>
+          <span>Google로 로그인</span>
+        </button>
+        <p id="google-auth-note" class="auth-setup-note">Google 로그인을 확인하고 있습니다.</p>
+        <button class="text-button email-login-toggle" id="email-login-toggle" type="button" aria-expanded="false" aria-controls="auth-fields">이메일 로그인 (기존 계정)</button>
+        <p id="google-identity" class="google-identity hidden">Google 계정 <strong id="google-identity-email"></strong></p>
+        <form id="auth-form">
+          <div id="auth-fields" class="auth-fields hidden">
+            <label class="auth-field register-only hidden" for="auth-name">이름<input id="auth-name" type="text" autocomplete="name" maxlength="80" placeholder="이름"></label>
+            <label class="auth-field register-only hidden" for="auth-age">나이<input id="auth-age" type="number" min="1" max="120" inputmode="numeric" placeholder="나이"></label>
+            <label class="auth-field email-password-field" for="auth-email">이메일<input id="auth-email" type="email" autocomplete="email" placeholder="you@example.com"></label>
+            <label class="auth-field email-password-field" for="auth-password">비밀번호<input id="auth-password" type="password" minlength="10" autocomplete="current-password" placeholder="10자 이상"></label>
+            <fieldset id="policy-consents" class="policy-consents register-only hidden">
+              <legend>이용정책 동의</legend>
+              <label><input id="consent-terms" type="checkbox"><span><a href="/terms" target="_blank" rel="noreferrer">iX이용정책</a> 동의</span></label>
+              <label><input id="consent-privacy" type="checkbox"><span><a href="/privacy" target="_blank" rel="noreferrer">iX개인정보 처리방침</a> 동의</span></label>
+              <label><input id="consent-youth" type="checkbox"><span><a href="/youth" target="_blank" rel="noreferrer">iX청소년 이용방침</a> 동의</span></label>
+            </fieldset>
+          </div>
+          <button class="primary auth-submit hidden" id="auth-submit" type="submit">로그인</button>
+        </form>
+        <button class="text-button auth-switch" id="auth-switch" type="button">Google로 가입하기</button>
+        <p id="auth-error" class="error-text" role="alert"></p>
+      </section>
+      <aside class="auth-art" aria-hidden="true"><div class="auth-art-mark"><img src="/assets/ixaistudio-logo.svg" alt=""></div></aside>
+    </div>
+    <p class="auth-legal"><a href="/terms" target="_blank" rel="noreferrer">이용정책</a><span>·</span><a href="/privacy" target="_blank" rel="noreferrer">개인정보 처리방침</a><span>·</span><a href="/youth" target="_blank" rel="noreferrer">청소년 이용방침</a></p>
+  </div>
+
+  <div id="app" class="app-shell hidden">
+    <aside class="sidebar" id="sidebar">
+      <div class="brand-row">
+        <img class="sidebar-logo" src="/assets/ixaistudio-logo.svg" alt="iX">
+        <span class="brand-label">ixaistudio</span>
+        <button id="sidebar-close" class="icon-button mobile-only" aria-label="메뉴 닫기">×</button>
+      </div>
+      <button id="new-chat" class="new-chat" aria-label="새 대화" title="새 대화"><span class="plus" aria-hidden="true">✎</span><span class="new-chat-label">새 대화</span><kbd>⌘ K</kbd></button>
+      <div class="nav-group">
+        <span class="nav-caption">WORKSPACE</span>
+        <button class="nav-item active" data-view="chat"><span>✳</span> 대화 <span class="nav-shortcut">01</span></button>
+        <button class="nav-item" data-view="memory"><span>⌑</span> 장기 기억</button>
+        <button class="nav-item" data-view="learning"><span>◫</span> 학습 센터</button>
+        <button class="nav-item admin-only hidden" data-view="data"><span>▤</span> 데이터 관리 <span id="pending-badge" class="count-badge hidden">0</span></button>
+      </div>
+      <div class="conversation-head"><span class="nav-caption">최근 대화</span><button id="refresh-chats" class="icon-button" aria-label="대화 새로고침">↻</button></div>
+      <div id="conversation-list" class="conversation-list"></div>
+      <div class="sidebar-bottom">
+        <div class="model-mini"><span class="pulse-dot"></span><div><b id="sidebar-version">v0000</b><small id="sidebar-model-state">초기 모델</small></div><span class="local-pill">LOCAL</span></div>
+        <button id="profile-button" class="profile-button"><span id="avatar" class="avatar">U</span><span class="profile-text"><b id="profile-email">사용자</b><small id="profile-role">일반 사용자</small></span><span class="chevron">···</span></button>
+      </div>
+    </aside>
+    <div id="mobile-scrim" class="mobile-scrim"></div>
+    <main class="main-area">
+      <header class="topbar">
+        <button id="menu-button" class="icon-button mobile-only" aria-label="메뉴 열기">☰</button>
+        <div class="breadcrumb"><span id="top-title">대화</span><span class="slash">/</span><span id="top-subtitle">개인 작업 공간</span></div>
+        <div class="top-actions"><span class="secure-label"><span>⌑</span> 비공개 세션</span><button id="theme-toggle" class="icon-button theme-button" title="테마 전환">☼</button><button id="help-button" class="icon-button" title="안내">?</button></div>
+      </header>
+      <section id="view-chat" class="view chat-view">
+        <div id="chat-empty" class="chat-empty">
+          <div class="welcome-orbit"><img class="orbit-core orbit-logo" src="/assets/ixaistudio-logo.svg" alt=""><i></i><i></i><i></i></div>
+          <p class="eyebrow">YOUR MODEL, YOUR DATA</p>
+          <h1>지금 바로 첫 질문을 시작해볼까요?</h1>
+          <p class="muted welcome-note">모든 응답은 이 기기에서 실행되는 자체 신경망이 생성합니다.</p>
+          <div class="suggestion-grid">
+            <button class="suggestion" data-prompt="이 모델은 어떻게 학습하나요?"><span>↗</span><b>학습 원리 알아보기</b><small>모델이 데이터를 배우는 과정</small></button>
+            <button class="suggestion" data-prompt="내 장기 기억을 어떻게 활용하나요?"><span>⌑</span><b>기억 사용 방법</b><small>대화에 연결되는 개인 메모</small></button>
+            <button class="suggestion" data-prompt="처음 시작할 때 무엇을 하면 좋을까요?"><span>✳</span><b>시작 가이드</b><small>내 데이터로 첫 학습하기</small></button>
+            <button class="suggestion" data-prompt="현재 모델의 상태를 알려 주세요."><span>◫</span><b>모델 상태 확인</b><small>버전과 학습 현황</small></button>
+          </div>
+          <div id="untrained-note" class="notice-inline hidden"><span>ⓘ</span><span>아직 학습 데이터가 없습니다. 검토·승인된 데이터를 학습해야 자연스러운 응답을 생성합니다.</span><button data-open-view="data">학습 준비 →</button></div>
+        </div>
+        <div id="message-list" class="message-list hidden"></div>
+        <div class="composer-wrap">
+          <form id="chat-form" class="composer">
+            <textarea id="chat-input" rows="1" maxlength="5000" placeholder="메시지를 입력하세요…" aria-label="메시지 입력"></textarea>
+            <div class="composer-bottom"><div class="composer-hints"><span class="tiny-lock">⌑</span><span>비공개 대화</span><span class="hint-dot">·</span><span>학습에는 별도 동의 필요</span></div><div class="composer-controls"><span id="char-count">0 / 5000</span><button id="send-button" class="send-button" type="submit" aria-label="보내기">↑</button></div></div>
+          </form>
+          <p class="footnote">자체 소형 언어 모델이며, 학습 전에는 답변 품질이 제한됩니다.</p>
+        </div>
+      </section>
+      <section id="view-learning" class="view content-view hidden"></section>
+      <section id="view-data" class="view content-view hidden"></section>
+      <section id="view-memory" class="view content-view hidden"></section>
+    </main>
+  </div>
+  <div id="toast-root" class="toast-root"></div>
+  <dialog id="modal" class="modal"><div id="modal-content"></div></dialog>
+  <script src="/assets/app.js?v=20261122-google-only" defer></script>
+</body>
+</html>
