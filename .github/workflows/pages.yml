@@ -1,4 +1,4 @@
-name: Publish ixaistudio site
+name: Sync ixaistudio frontend to Pages root
 
 on:
   push:
@@ -11,43 +11,36 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
-  pages: write
-  id-token: write
-
-concurrency:
-  group: github-pages
-  cancel-in-progress: true
+  contents: write
 
 jobs:
-  deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+  sync:
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
-      - name: Configure Pages
-        uses: actions/configure-pages@v5
-      - name: Prepare static site root
+      - name: Copy site files to GitHub Pages root
         shell: bash
         run: |
-          mkdir -p _site/assets _site/terms _site/privacy _site/youth
-          cp ixai/frontend/index.html _site/index.html
-          cp ixai/frontend/styles.css _site/assets/styles.css
-          cp ixai/frontend/experience.css _site/assets/experience.css
-          cp ixai/frontend/app.js _site/assets/app.js
-          cp ixai/frontend/ixaistudio-logo.svg _site/assets/ixaistudio-logo.svg
-          cp ixai/frontend/terms.html _site/terms/index.html
-          cp ixai/frontend/privacy.html _site/privacy/index.html
-          cp ixai/frontend/youth.html _site/youth/index.html
-          cp CNAME _site/CNAME
-          touch _site/.nojekyll
-      - name: Upload Pages artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: _site
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+          mkdir -p assets terms privacy youth
+          cp ixai/frontend/index.html index.html
+          cp ixai/frontend/styles.css assets/styles.css
+          cp ixai/frontend/experience.css assets/experience.css
+          cp ixai/frontend/app.js assets/app.js
+          cp ixai/frontend/ixaistudio-logo.svg assets/ixaistudio-logo.svg
+          cp ixai/frontend/terms.html terms/index.html
+          cp ixai/frontend/privacy.html privacy/index.html
+          cp ixai/frontend/youth.html youth/index.html
+          touch .nojekyll
+      - name: Commit synchronized site files
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html assets/ terms/ privacy/ youth/ .nojekyll
+          if git diff --cached --quiet; then
+            echo "No frontend changes to publish."
+            exit 0
+          fi
+          git commit -m "Publish ixaistudio frontend to Pages root"
+          git push
